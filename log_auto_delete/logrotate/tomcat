@@ -1,0 +1,30 @@
+1、设置tomcatpid位置
+vim  catalina.sh
+# Get standard environment variables
+PRGDIR=`dirname "$PRG"`
+CATALINA_PID=/var/run/tomcat.pid
+2、编辑vim /etc/logrotate.d/tomcat
+/app/tomcat/logs/catalina.out {
+        daily
+        rotate 15
+        missingok
+        notifempty
+        dateext
+        compress
+        delaycompress
+        sharedscripts
+        create 644 root root
+        postrotate
+                if [ -f /var/run/tomcat.pid ]; then
+                        kill -HUP `cat /var/run/tomcat.pid`
+                fi
+        endscript
+}
+
+
+
+如何起作用
+每天晚上，cron daemon会自动执行/etc/cron.daily目录下的任务
+这个会触发/etc/cron.daily/logrotate文件，logrotate一般是随linux按安装的。它会执行这个命令-“/etc/sbin/logrotate /etc/logrotate.conf”
+/etc/logrotate.conf 包含了/etc/logrotate.d目录下的所有脚本
+这个会触发上一步你写的/etc/logrotate.d/tomcate文件

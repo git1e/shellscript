@@ -1,0 +1,66 @@
+开机启动脚本&service脚本。
+/etc/init.d/elasticsearch
+
+#!/bin/bash
+#chkconfig: 345 63 37
+#description: elasticsearch
+
+path=/app/elasticsearch
+stop(){
+  is_exist
+   if [ $? -eq "0" ]; then
+     kill -9 `ps aux | grep elasticsearch | grep java| grep -v grep | gawk '{print $2}'`
+     echo "elastic is stoping"
+   else
+     echo "elastic is stoped"
+    fi
+
+}
+
+is_exist() {
+    pid=`ps -ef |grep java| grep elasticsearch | grep -v grep | awk '{print $2}' `
+    #如果不存在返回1，存在返回0
+    if [ -z "${pid}" ]; then
+      return 1
+    else
+      return 0
+    fi
+}
+
+start() {
+   is_exist
+   if [ $? -eq "0" ]; then
+     echo "elasticsearch is running. pid=${pid} ."
+   else
+     /bin/su elastic -c "$path/bin/elasticsearch -d"
+     echo "elastic is starting"
+    fi
+}
+
+status() {
+   is_exist
+   if [ $? -eq "0" ]; then
+     echo "elasticsearch is running. pid=${pid} ."
+   else
+     echo "elasticsearch is stop"
+   fi
+}
+
+case $1 in
+   "start")
+     start
+     ;;
+   "stop")
+     stop
+     ;;
+   "status")
+     status
+     ;;
+        *)
+        echo "$0 Usage( start | stop | status  )"
+        ;;
+esac
+
+
+
+
