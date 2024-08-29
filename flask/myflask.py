@@ -45,7 +45,7 @@ def api_v2():
 @app.route('/api/user', methods=['POST'])
 def api_user():
     response = "<span class='red-text'>this is route /api/user</span>"
-    log_message = f"Route accessed: '/api/user' with method {request.method}"
+    log_message = f"Route accessed: '/api/user' with method {request.method},request.args: {request.args}"
     app.logger.info(log_message)
 
     return response, 200
