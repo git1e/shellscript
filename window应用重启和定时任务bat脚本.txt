@@ -1,0 +1,35 @@
+1、# restart_app.bat 定时任务脚本
+++++++++++++++++++++++
+@echo off
+echo "notepad++ Restart"
+taskkill /im  notepad++.exe
+echo "notepad++ Stop"
+start  /d "D:\Program Files (x86)\Notepad++\" notepad++.exe
+echo "notepad++ Start"
+exit
+
+
+
+2、Create_crontab.bat ：创建定时任务脚本
+++++++++++++++++++++++++++++++++++++++++++
+@echo off
+schtasks /create /tn "restart_app" /ru system /tr D:\restart_app.bat /sc weekly /d mon /st 01:00
+start %systemroot%\tasks
+echo 创建成功，请检查...
+pause
+del /f Create_crontab.bat
+
+ 
+
+参数解释：
+schtasks /create 指的是创建计划任务
+/tn 指定计划任务的名称
+/ru　指定运行该批处理的账号，如果去掉该参数则默认为当前账户运行，会提示输入密码。一个计划任务所用的账号如果密码变动后该批处理就不再会运行成功，所以我这里使用系统账号system，密码就省略不写。
+/rp   指定账号的密码
+/tr 指定程序所在路径，这里为指定要执行的批处理存放路径。
+/sc 为指定运行的周期
+/d 为日期.这里mon为英文单词缩写，周一
+/st 为运行时间
+start %systemroot%\tasks 这一句只是为了弹出计划任务窗口查看创建成功与否
+del /f Create.bat 为创建完成后自动删除创建该计划任务的批处理
+schtasks命令详细解释可以参见微软的

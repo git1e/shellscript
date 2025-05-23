@@ -1,0 +1,5 @@
+nginx/file.txt
+nginx/config_create.sh
+nginx/prod_config_creat.sh
+nginx/rc_config_create.sh
+flask/app.log

@@ -1,0 +1,60 @@
+#!/bin/bash
+#chkconfig: 345 63 37
+#description: logstash
+
+path=/app/logstash
+
+stop(){
+  is_exist
+   if [ $? -eq "0" ]; then
+     kill -9 `ps aux | grep logstash | grep java| grep -v grep | gawk '{print $2}'`
+     echo "logstash is stoping"
+   else
+     echo "logstash is stoped"
+    fi
+
+}
+
+is_exist() {
+    pid=`ps -ef |grep java| grep logstash | grep -v grep | awk '{print $2}' `
+    #如果不存在返回1，存在返回0
+    if [ -z "${pid}" ]; then
+      return 1
+    else
+      return 0
+    fi
+}
+
+start() {
+   is_exist
+   if [ $? -eq "0" ]; then
+     echo "logstash is running. pid=${pid} ."
+   else
+     nohup $path/bin/logstash -f $path/config/logstash-sls.conf > /dev/null 2>&1 &
+     echo "logstash is starting"
+    fi
+}
+
+status() {
+   is_exist
+   if [ $? -eq "0" ]; then
+     echo "logstash is running. pid=${pid} ."
+   else
+     echo "logstash is stop"
+   fi
+}
+
+case $1 in
+   "start")
+     start
+     ;;
+   "stop")
+     stop
+     ;;
+   "status")
+     status
+     ;;
+        *)
+        echo "$0 Usage( start | stop | status  )"
+        ;;
+esac
