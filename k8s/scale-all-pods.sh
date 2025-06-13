@@ -75,6 +75,7 @@ if [[ "$1" == "restart-deploy" ]]; then
     if [ $num -ge 5 ];then  
       echo "has restart 5 app,sleep"  
       sleep 30
+      num=0
     fi  
   done < replicas-pod.txt
   echo "all app has restarted!"
