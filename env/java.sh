@@ -5,6 +5,8 @@ JAVA_DIR=/usr/local/java
 SUPPORTED_VERSIONS=("17.0.2" "11.0.2" "21.0.2")
 # 默认Java版本
 DEFAULT_VERSION="17.0.2"
+# 初始化JAVA_VERSION变量
+JAVA_VERSION="${DEFAULT_VERSION}"
 
 # 选择Java版本
 select_java_version() {
