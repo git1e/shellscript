@@ -1,0 +1,35 @@
+global:
+  notification_email: admin@example.com
+  notification_email_from: keepalived@example.com
+  smtp_server: 127.0.0.1
+  smtp_connect_timeout: 30
+  router_id: 99
+
+vips:
+  - vip: 192.168.8.200
+    vrrp_instance: VI_1
+    virtual_router_id: 51
+    state: MASTER
+    priority: 100
+    interface: ens32
+    real_servers:
+      - ip: 192.168.8.30
+        weight: 3
+      - ip: 192.168.8.40
+        weight: 1
+      - ip: 192.168.8.50   # ← 新增 RS
+      - ip: 192.168.8.55
+        weight: 2
+
+  - vip: 192.168.8.202
+    vrrp_instance: VI_2
+    virtual_router_id: 52
+    state: BACKUP
+    priority: 90
+    interface: ens32
+    real_servers:
+      - ip: 192.168.8.30
+        weight: 3
+      - ip: 192.168.8.40
+        weight: 1
+      - ip: 192.168.8.60   # ← 新增 RS
