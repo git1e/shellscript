@@ -56,7 +56,7 @@ else
     mkdir ${PACKAGE_PATH}
 fi
 
-cd ${PACKAGE_PATH}
+
 
 function yum_repo() {
     mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
@@ -74,6 +74,7 @@ function install_tools() {
 function download_package() {
     install_tools
     echo "download nginx  package"
+    cd ${PACKAGE_PATH}
     curl -O  https://tengine.taobao.org/download/tengine-${NGINX_VERSION}.tar.gz && tar zxf tengine-${NGINX_VERSION}.tar.gz
     echo "git clone echo-nginx-module"
     git clone -b v0.63 --depth 1 https://gitee.com/mirrors/echo-nginx-module.git
@@ -87,8 +88,10 @@ function install_dependency() {
 
 function install_nginx() {
     useradd -M -s /sbin/nologin nginx 
-    cd tengine-${NGINX_VERSION} && ./configure  ${CONFIG_OPTIONS}  && \ 
-    make  && make install 
+    cd ${PACKAGE_PATH}/tengine-${NGINX_VERSION} && \
+    ./configure  ${CONFIG_OPTIONS}  && \ 
+    make  && \
+    make install 
 
     ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
     ln -s /usr/local/nginx/conf /etc/nginx
