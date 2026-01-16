@@ -105,7 +105,7 @@ function install_nginx() {
     systemctl  daemon-reload && systemctl enable nginx
 
     # nginx logrotate
-    cp nginx_logrotate /etc/logrotate.d/
+    # cp nginx_logrotate /etc/logrotate.d/
 }
 
 download_package
