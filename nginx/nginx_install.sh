@@ -89,9 +89,9 @@ function install_dependency() {
 function install_nginx() {
     useradd -M -s /sbin/nologin nginx 
     cd ${PACKAGE_PATH}/tengine-${NGINX_VERSION} && \
-    ./configure  ${CONFIG_OPTIONS}  && \ 
+    ./configure  ${CONFIG_OPTIONS}  && \
     make  && \
-    make install 
+    make install
 
     ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
     ln -s /usr/local/nginx/conf /etc/nginx
